@@ -152,7 +152,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 40
+vim.opt.scrolloff = 100
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -162,16 +162,17 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 vim.keymap.set('i', 'jk', '<ESC>')
-vim.keymap.set('n', '<leader>w', '<cmd>w<cr><esc>', { desc = 'Save file' })
-vim.keymap.set('n', 'L', ':BufferLineCycleNext<CR>')
-vim.keymap.set('n', 'H', ':BufferLineCyclePrev<CR>')
+vim.keymap.set('n', '<leader>w', '<cmd>w<CR><esc>', { desc = 'Save file' })
+vim.keymap.set('n', 'L', '<cmd>BufferNext<CR>')
+vim.keymap.set('n', 'H', '<cmd>BufferPrevious<CR>')
 vim.keymap.set('n', 'J', '5j')
 vim.keymap.set('n', 'K', '5k')
+vim.keymap.set('n', '<leader>c', '<cmd>BufferClose<CR><esc>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -288,7 +289,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+        ['<leader>c'] = { name = '[C]lose', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
@@ -496,7 +497,7 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          -- map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -508,7 +509,7 @@ require('lazy').setup({
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
-          map('kK', vim.lsp.buf.hover, 'Hover Documentation')
+          map('gh', vim.lsp.buf.hover, 'Hover Documentation')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -664,7 +665,8 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        javascript = { { 'prettierd', 'prettier' } },
+        -- javascriptreact = { { 'prettierd', 'prettier', 'eslint' } },
+        -- javascript = { { 'prettierd', 'prettier', 'eslint' } },
       },
     },
   },
@@ -897,7 +899,7 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
