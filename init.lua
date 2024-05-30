@@ -553,6 +553,13 @@ require('lazy').setup({
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, '[T]oggle Inlay [H]ints')
           end
+
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            -- callback = function()
+            --   vim.lsp.buf.format()
+            -- end,
+            command = 'EslintFixAll',
+          })
         end,
       })
 
@@ -665,8 +672,8 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascriptreact = { { 'prettierd', 'prettier', 'eslint' } },
-        -- javascript = { { 'prettierd', 'prettier', 'eslint' } },
+        javascriptreact = {},
+        javascript = {},
       },
     },
   },
