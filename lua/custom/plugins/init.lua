@@ -18,53 +18,46 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      require('nvim-tree').setup {}
+      local HEIGHT_RATIO = 0.8 -- You can change this
+      local WIDTH_RATIO = 0.8 -- You can change this too
+      require('nvim-tree').setup {
+        view = {
+          float = {
+            enable = true,
+            open_win_config = function()
+              local screen_w = vim.opt.columns:get()
+              local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+              local window_w = screen_w * WIDTH_RATIO
+              local window_h = screen_h * HEIGHT_RATIO
+              local window_w_int = math.floor(window_w)
+              local window_h_int = math.floor(window_h)
+              local center_x = (screen_w - window_w) / 2
+              local center_y = ((vim.opt.lines:get() - window_h) / 2 - vim.opt.cmdheight:get())
+              return {
+                border = 'rounded',
+                relative = 'editor',
+                row = center_y,
+                col = center_x,
+                width = window_w_int,
+                height = window_h_int,
+              }
+            end,
+          },
+          width = function()
+            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+          end,
+        },
+        hijack_unnamed_buffer_when_opening = true,
+        disable_netrw = true, -- disable :Explore
+        hijack_directories = {
+          enable = true,
+          auto_open = false,
+        },
+      }
       vim.keymap.set('n', '<leader>e', ':NvimTreeFindFileToggle<CR>', { silent = true })
+      vim.cmd.hi 'NvimTreeNormalFloat guibg=none'
     end,
   },
-  -- {
-  --   'akinsho/bufferline.nvim',
-  --   version = '*',
-  --   dependencies = 'nvim-tree/nvim-web-devicons',
-  --   config = function() -- This is the function that runs, AFTER loading
-  --     local bufferline = require 'bufferline'
-  --     bufferline.setup {
-  --       options = {
-  --         mode = 'buffers', -- set to "tabs" to only show tabpages instead
-  --         style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
-  --         themable = true, -- allows highlight groups to be overriden i.e. sets highlights as default
-  --         numbers = 'both',
-  --         close_command = 'bdelete! %d', -- can be a string | function, | false see "Mouse actions"
-  --         right_mouse_command = 'bdelete! %d', -- can be a string | function | false, see "Mouse actions"
-  --         left_mouse_command = 'buffer %d', -- can be a string | function, | false see "Mouse actions"
-  --         middle_mouse_command = nil, -- can be a string | function, | false see "Mouse actions"
-  --         indicator = {
-  --           icon = '▎', -- this should be omitted if indicator style is not 'icon'
-  --           style = 'icon', -- | 'underline' | 'none',
-  --         },
-  --         buffer_close_icon = '󰅖',
-  --         modified_icon = '●',
-  --         close_icon = '',
-  --         left_trunc_marker = '',
-  --         right_trunc_marker = '',
-  --         offsets = {
-  --           {
-  --             filetype = 'NvimTree',
-  --             text = 'File Explorer',
-  --             text_align = 'center',
-  --             separator = true,
-  --           },
-  --         },
-  --         color_icons = true, -- whether or not to add the filetype icon highlights
-  --         diagnostics = 'nvim_lsp',
-  --         diagnostics_indicator = function(count, level, diagnostics_dict, context)
-  --           local icon = level:match 'error' and ' ' or ' '
-  --           return ' ' .. icon .. count
-  --         end,
-  --       },
-  --     }
-  --   end,
-  -- },
   {
     'romgrk/barbar.nvim',
     dependencies = {
@@ -81,12 +74,12 @@ return {
       -- Set the filetypes which barbar will offset itself for
       sidebar_filetypes = {
         -- Use the default values: {event = 'BufWinLeave', text = '', align = 'left'}
-        NvimTree = true,
+        -- NvimTree = true,
         -- Or, specify the text used for the offset:
-        undotree = {
-          text = 'undotree',
-          align = 'center', -- *optionally* specify an alignment (either 'left', 'center', or 'right')
-        },
+        -- undotree = {
+        --   text = 'undotree',
+        --   align = 'center', -- *optionally* specify an alignment (either 'left', 'center', or 'right')
+        -- },
         -- Or, specify the event which the sidebar executes when leaving:
         -- ['neo-tree'] = { event = 'BufWipeout' },
         -- Or, specify all three
@@ -95,6 +88,7 @@ return {
     },
     version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
+
   -- Git
   {
     'f-person/git-blame.nvim',
@@ -103,7 +97,7 @@ return {
       vim.cmd 'highlight default link gitblame SpecialComment'
       vim.g.gitblame_enabled = 1
       vim.g.gitblame_date_format = '%r'
-      vim.g.gitblame_ignored_filetypes = { 'lua' }
+      -- vim.g.gitblame_ignored_filetypes = { 'lua' }
     end,
   },
   {
