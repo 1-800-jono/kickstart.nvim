@@ -371,28 +371,15 @@ require('lazy').setup({
           mappings = {
             i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           },
-                layout_strategy = 'vertical',
-      layout_config = { 
-            height = 0.95
-              width = 0.95
-            preview_cutoff = 120,
-            prompt_position = 'bottom',
-            center = {
-              height = 0.9,
-        pickers = {
-          find_files = {
-            theme = 'dropdown',
+          layout_strategy = 'vertical',
+          layout_config = {
+            height = 0.95,
+            width = 0.95,
           },
-        },
-        },
-        pickers = {
-          find_files = {
-            theme = 'dropdown',
-          },
-        },
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
+          extensions = {
+            ['ui-select'] = {
+              require('telescope.themes').get_dropdown(),
+            },
           },
         },
       }
